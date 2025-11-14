@@ -1,0 +1,6 @@
+<mvc:View controllerName="com.ui5.train.orders.controller.OrdersMain"
+    xmlns:mvc="sap.ui.core.mvc"    
+    xmlns="sap.m">
+    <Page id="page" title="{i18n>title}">           
+    </Page>
+</mvc:View>
