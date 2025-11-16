@@ -7,7 +7,7 @@
                     <PropertyRef Name="OrderID" />
                 </Key>
                 <Property Name="OrderID" Type="Edm.Int32" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
-                <Property Name="OrderDate" Type="Edm.DateTime" Precision="3" />
+                <Property Name="OrderDate" Type="Edm.Date" Precision="3" />
                 <Property Name="ReceivingPlantID" Type="Edm.String" MaxLength="4" />
                 <Property Name="ReceivingPlantText" Type="Edm.String" MaxLength="20"  />
                 <Property Name="DeliveringPlantID" Type="Edm.String" MaxLength="4"  />                                

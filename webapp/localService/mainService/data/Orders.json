@@ -1,7 +1,7 @@
 [
     {
         "OrderID": 12201,
-        "OrderDate": "/Date(836438400000)/",
+        "OrderDate": "2022-12-31",
         "ReceivingPlantID": "9101",
         "ReceivingPlantText": "Singapore",
         "DeliveringPlantID": "9102",
@@ -10,20 +10,20 @@
     },
     {
         "OrderID": 12202,
-        "OrderDate": "/Date(836438400000)/",
+        "OrderDate": "2022-12-31",
         "ReceivingPlantID": "9101",
         "ReceivingPlantText": "Singapore",
         "DeliveringPlantID": "9102",
         "DeliveringPlantText": "Malaysia",
-        "Status": "Created"
+        "Status": "Released"
     },
     {
-        "OrderID": 12202,
-        "OrderDate": "/Date(836438400000)/",
+        "OrderID": 12203,
+        "OrderDate": "2022-12-31",
         "ReceivingPlantID": "9101",
         "ReceivingPlantText": "Singapore",
         "DeliveringPlantID": "9102",
         "DeliveringPlantText": "Malaysia",
-        "Status": "Created"
+        "Status": "Delivered"
     }    
 ]
