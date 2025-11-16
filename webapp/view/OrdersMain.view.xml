@@ -73,9 +73,10 @@
 			</f:header>            
 			<f:content>            
 				<Table
-					id="table"
+					id="ordersTable"
 					inset="false"
-                    mode="MultiSelect"
+                    mode="MultiSelect"                    
+                    selectionChange="onSelectItem"
 					items="{
 						path: '/Orders'
 					}"
@@ -106,7 +107,7 @@
 						</Column>                        
 					</columns>
 					<items>
-						<ColumnListItem vAlign="Middle">
+						<ColumnListItem vAlign="Middle"  type="Navigation">
 							<cells>
 								<ObjectIdentifier title="{OrderID}" />
 								<Text text="{OrderDate}" />
