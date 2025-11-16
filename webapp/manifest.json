@@ -44,7 +44,7 @@
     }
   },
   "sap.ui5": {
-    "flexEnabled": true,
+    "flexEnabled": false,
     "dependencies": {
       "minUI5Version": "1.142.0",
       "libs": {
@@ -62,6 +62,11 @@
         "settings": {
           "bundleName": "com.ui5.train.orders.i18n.i18n"
         }
+      },
+      "status":{
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "./model/Status.json",
+        "preload": true        
       },
       "": {
         "dataSource": "mainService",

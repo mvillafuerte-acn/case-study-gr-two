@@ -1,0 +1,23 @@
+<mvc:View controllerName="com.ui5.train.orders.controller.OrdersMain"
+    xmlns:mvc="sap.ui.core.mvc"    
+    height="100%"
+	displayBlock="true"	
+	xmlns:f="sap.f"
+	xmlns:core="sap.ui.core"	
+	xmlns:mdct="sap.ui.mdc.table"
+    xmlns="sap.m">
+    <Page id="page" title="{i18n>title}">   
+     <List items="{status>/Status}"                                                      
+                    id="productList"
+                    mode="SingleSelectMaster"
+                    selectionChange="onItemPress"
+                    >                        
+                <ObjectListItem id="sList"
+                    title="{status>StatusID}"
+                    type="Active"                                                                  
+                    >
+                <ObjectAttribute id="objectAttrib0" text="{status>Status}" />                
+                </ObjectListItem>                        
+            </List>                                 		                       
+    </Page>
+</mvc:View>

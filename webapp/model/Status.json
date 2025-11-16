@@ -1,0 +1,19 @@
+{ "Status": [
+    {
+        "StatusID": "001",
+        "Status": "Created"
+    },
+    {
+        "StatusID": "002",
+        "Status": "Released"
+    },
+    {
+        "StatusID": "003",
+        "Status": "Partially Completed"
+    },
+    {
+        "StatusID": "004",
+        "Status": "Delivered"
+    }            
+]
+}
