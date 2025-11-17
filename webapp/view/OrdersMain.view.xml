@@ -61,8 +61,8 @@
 											name="Status"
 											selectionChange=".onSelectionChange"
 											items="{status>/Status}"
-										>
-											<core:Item key="{status>StatusID}" text="{status>Status}"/>
+										>											
+											<core:Item key="{status>StatusID}" text="{status>Status}" />
 										</MultiComboBox>
 									</fb:control>
 								</fb:FilterGroupItem>
@@ -113,7 +113,11 @@
 								<Text text="{OrderDate}" />
 								<Text text="{= ${ReceivingPlantID} + ' - ' + ${ReceivingPlantText} }" />
                                 <Text text="{= ${DeliveringPlantID} + ' - ' + ${DeliveringPlantText} }" />
-                                <Text text="{Status}" />
+								<ObjectStatus
+									class="sapUiSmallMarginBottom"
+									text="{Status}"
+									inverted="false"
+									state="{StatusState}" />								                                
 							</cells>
 						</ColumnListItem>
 					</items>

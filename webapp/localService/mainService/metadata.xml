@@ -13,6 +13,7 @@
                 <Property Name="DeliveringPlantID" Type="Edm.String" MaxLength="4"  />                                
                 <Property Name="DeliveringPlantText" Type="Edm.String" MaxLength="20" />                                
                 <Property Name="Status" Type="Edm.String" MaxLength="10" />
+                <Property Name="StatusState" Type="Edm.String" MaxLength="10" />
             </EntityType>        
            <EntityContainer Name="ProjectEntities" m:IsDefaultEntityContainer="true">
                 <EntitySet Name="Orders" EntityType="ProjectModel.Order">

@@ -6,7 +6,8 @@
         "ReceivingPlantText": "Singapore",
         "DeliveringPlantID": "9102",
         "DeliveringPlantText": "Malaysia",
-        "Status": "Created"
+        "Status": "Created",
+        "StatusState":"None"
     },
     {
         "OrderID": 12202,
@@ -15,7 +16,8 @@
         "ReceivingPlantText": "Singapore",
         "DeliveringPlantID": "9102",
         "DeliveringPlantText": "Malaysia",
-        "Status": "Released"
+        "Status": "Released",
+        "StatusState":"Error"
     },
     {
         "OrderID": 12203,
@@ -24,6 +26,17 @@
         "ReceivingPlantText": "Singapore",
         "DeliveringPlantID": "9102",
         "DeliveringPlantText": "Malaysia",
-        "Status": "Delivered"
-    }    
+        "Status": "Delivered",
+        "StatusState":"Success"
+    },
+    {
+        "OrderID": 12204,
+        "OrderDate": "2022-12-31",
+        "ReceivingPlantID": "9101",
+        "ReceivingPlantText": "Singapore",
+        "DeliveringPlantID": "9102",
+        "DeliveringPlantText": "Malaysia",
+        "Status": "Partially Completed",
+        "StatusState":"Information"
+    }        
 ]
