@@ -1,0 +1,15 @@
+{ "Plants": [
+    {
+        "PlantsID": "9101",
+        "PlantText": "Singapore"
+    },
+    {
+        "PlantsID": "9102",
+        "PlantText": "Malaysia"
+    },
+    {
+        "PlantsID": "9103",
+        "PlantText": "Philippines"
+    }     
+]
+}
