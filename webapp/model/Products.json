@@ -1,0 +1,19 @@
+{ "Products":[
+    
+        { "ProductID": "P001",
+        "ProductName": "Sony Bravia TV",
+        "PricePerQty": "30000"
+        },
+
+        { "ProductID": "P002",
+        "ProductName": "Samsung TV",
+        "PricePerQty": "50000"
+        },  
+
+        { "ProductID": "P003",
+        "ProductName": "Philips TV",
+        "PricePerQty": "35000"
+        }                
+]
+
+}

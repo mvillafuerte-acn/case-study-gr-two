@@ -68,6 +68,16 @@
         "uri": "./model/Status.json",
         "preload": true        
       },
+      "plants":{
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "./model/Plants.json",
+        "preload": true        
+      },
+      "products":{
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "./model/Products.json",
+        "preload": true        
+      },                
       "": {
         "dataSource": "mainService",
         "preload": true,
