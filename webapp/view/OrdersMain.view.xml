@@ -107,7 +107,7 @@
 						</Column>                        
 					</columns>
 					<items>
-						<ColumnListItem vAlign="Middle"  type="Navigation">
+						<ColumnListItem vAlign="Middle"  type="Navigation" press="onPressItem">
 							<cells>
 								<ObjectIdentifier title="{OrderID}" />
 								<Text text="{OrderDate}" />

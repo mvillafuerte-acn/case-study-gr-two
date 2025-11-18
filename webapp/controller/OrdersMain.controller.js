@@ -42,6 +42,16 @@ sap.ui.define([
                 });
             }
 
+        },
+
+         onPressItem: function(oEvent) {
+            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+            var oItem = oEvent.getSource();
+
+            oRouter.navTo("DetailPage", {
+                OrderID: oItem.getBindingContext().getObject().OrderID
+
+            });
         }
     });
 });

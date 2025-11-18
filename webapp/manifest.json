@@ -110,13 +110,25 @@
           "target": [
             "TargetOrdersMain"
           ]
+        },
+        {
+          "name": "DetailPage",
+          "pattern": "details/{OrderID}",
+          "target":[
+            "TargetDetailPage"
+          ]
         }
       ],
       "targets": {
         "TargetOrdersMain": {
           "id": "OrdersMain",
           "name": "OrdersMain"
-        }
+        },
+        
+        "TargetDetailPage": {
+          "viewId": "DetailPage",
+          "viewName": "DetailPage"
+         }
       }
     },
     "rootView": {

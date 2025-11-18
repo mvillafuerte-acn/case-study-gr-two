@@ -1,0 +1,80 @@
+<mvc:View controllerName="com.ui5.train.orders.controller.DetailPage"
+    	height="100%"
+		xmlns:mvc="sap.ui.core.mvc"
+		xmlns:core="sap.ui.core"
+		xmlns="sap.m"
+		xmlns:fb="sap.ui.comp.filterbar"
+		xmlns:svm="sap.ui.comp.smartvariants"
+		xmlns:f="sap.ui.layout.form">
+
+    <Page id="idDetailPage" title="DETAIL">
+        <content>
+        <!-- ===== ORDER DETAIL SECTION ===== -->
+            <Panel headerText="Order Detail" class="sapUiSmallMargin">
+
+                <f:SimpleForm
+                    editable="false"
+                    layout="ResponsiveGridLayout"
+                    labelSpanXL="3" labelSpanL="3" labelSpanM="4" emptySpanXL="1"
+                    emptySpanL="1" emptySpanM="0" columnsXL="2" columnsL="2" columnsM="1">
+
+                    <Label text="Order Number"/>
+                    <Text text="{details/Orders}" />
+
+                    <Label text="Created On"/>
+                    <Text text="{OrderDate}" />
+
+                    <Label text="Receiving Plant"/>
+                    <Text text="{plants>/Plants}" />
+
+                    <Label text="Delivering Plant"/>
+                    <Text text="{order>/deliveringPlant}" />
+
+                    <Label text="Status"/>
+                    <ObjectStatus text="{status>/Status}" state="Success"/>
+                </f:SimpleForm>
+            </Panel>
+
+
+            <!-- ===== PRODUCTS TABLE ===== -->
+            <Panel headerText="Product ({products>/length})" class="sapUiSmallMarginTop">
+
+                <Table items="{products>/}">
+                    <columns>
+
+                        <Column>
+                            <Text text="Product Name"/>
+                        </Column>
+
+                        <Column hAlign="Center">
+                            <Text text="Quantity"/>
+                        </Column>
+
+                        <Column hAlign="Center">
+                            <Text text="Price Per Quantity"/>
+                        </Column>
+
+                        <Column hAlign="Center">
+                            <Text text="Total Price"/>
+                        </Column>
+
+                    </columns>
+
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <Text text="{products>name}" />
+                                <Text text="{products>quantity}" />
+                                <Text text="{products>price}" />
+                                <Text text="{products>total}" />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+
+            </Panel>
+
+        </content>
+    </Page>
+
+</mvc:View>
