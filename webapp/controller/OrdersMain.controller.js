@@ -2,14 +2,22 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
     "sap/m/MessageBox",
-    "sap/ui/model/Sorter"    
-], function(Controller, JSONModel, MessageBox, Sorter) {
+    "sap/ui/model/Sorter" ,
+    "sap/m/MessageToast"   
+], function(Controller, JSONModel, MessageBox, Sorter, MessageToast) {
     "use strict";
 
     return Controller.extend("com.ui5.train.orders.controller.OrdersMain", {
         onInit: function() {            
+            // Create a new JSON model
+            var oModel = new JSONModel();
+            // Load data from external JSON file
+            oModel.loadData("./webapp/localService/mainService/data/Orders.json");
+            // Set the model to the view
+            this.getView().setModel(oModel, "Orders");          
 
         },
+
 
         onDelete: function() {
             let oBundle = this.getView().getModel("i18n").getResourceBundle();
@@ -41,7 +49,21 @@ sap.ui.define([
                         }
                 });
             }
+            
 
-        }
+        },
+
+    
+        onAdd: function () {
+            
+            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+            oRouter.navTo("OrdersCreate", null);
+       
+        },
+
+
+    
+
+
     });
 });
