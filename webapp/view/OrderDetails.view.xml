@@ -1,0 +1,79 @@
+<mvc:View controllerName="com.ui5.train.orders.controller.OrderDetails"
+		height="100%"
+		xmlns:mvc="sap.ui.core.mvc"
+		xmlns:core="sap.ui.core"
+		xmlns="sap.m"
+		xmlns:fb="sap.ui.comp.filterbar"
+		xmlns:svm="sap.ui.comp.smartvariants"
+		xmlns:f="sap.ui.layout.form">
+
+    <Page id="idDetailPage" title="DETAIL">
+        <content>
+        <!-- ===== ORDER DETAIL SECTION ===== -->
+            <Panel headerText="Order Detail" class="sapUiSmallMargin">
+
+                <f:SimpleForm
+                    editable="false"
+                    layout="ResponsiveGridLayout"
+                    labelSpanXL="3" labelSpanL="3" labelSpanM="4" emptySpanXL="1"
+                    emptySpanL="1" emptySpanM="0" columnsXL="2" columnsL="2" columnsM="1">
+
+                    <Label text="Order Number"/>
+                    <Text text="{orderdetails>/OrderID}" />
+
+                    <Label text="Created On"/>
+                    <Text text="{orderdetails>/OrderDate}" />
+
+                    <Label text="Receiving Plant"/>
+                    <Text text="{= ${orderdetails>/ReceivingPlantID} + ' - ' + ${orderdetails>/ReceivingPlantText} }"/>
+
+                    <Label text="Delivering Plant"/>
+                    <Text text="{= ${orderdetails>/DeliveringPlantID} + ' - ' + ${orderdetails>/DeliveringPlantText} }" />
+
+                    <Label text="Status"/>
+                    <ObjectStatus text="{orderdetails>/Status}" state="{orderdetails>/StatusState}"/>
+                </f:SimpleForm>
+            </Panel>
+
+
+            <!-- ===== PRODUCTS TABLE ===== -->
+            <Panel headerText="Product ({products>/length})" class="sapUiSmallMarginTop">
+
+                <Table items="{orderdetails>/Product}">
+                    <columns>
+
+                        <Column>
+                            <Text text="{i18n>productTable.ProductName}"/>
+                        </Column>
+
+                        <Column hAlign="Center">
+                            <Text text="{i18n>productTable.Quantity}"/>
+                        </Column>
+
+                        <Column hAlign="Center">
+                            <Text text="{i18n>productTable.PricePerQuantity}"/>
+                        </Column>
+
+                        <Column hAlign="Center">
+                            <Text text="{i18n>productTable.TotalPrice}"/>
+                        </Column>
+
+                    </columns>
+
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <Text text="{orderdetails>ProductName}" />
+                                <Text text="{orderdetails>ProductQty}" />
+                                <Text text="{orderdetails>PricePerQty}" />
+                                <Text text="{orderdetails>PricePerQty}" />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+
+            </Panel>
+
+        </content>
+    </Page>
+</mvc:View>

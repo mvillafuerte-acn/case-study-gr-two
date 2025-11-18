@@ -7,22 +7,22 @@ sap.ui.define([
     "use strict";
 
     return Controller.extend("com.ui5.train.orders.controller.OrdersMain", {
-        onInit: function() { 
-            let oModel = new JSONModel();
-            oModel = this.getOwnerComponent().getModel("orderdetails");
-            this.getView().setModel(oModel, "orderdetails");  
-
-            let oRouter = this.getOwnerComponent().getRouter();
-            oRouter.getRoute("RouteOrdersMain").attachPatternMatched(this._onRouteMatched, this);          
+        onInit: function() {                        
+            // Load mock data from model folder
+            //var oModel = new sap.ui.model.json.JSONModel();
+            //oModel.loadData("localService/mainService/data/Orders.json");  
+            var oModel = new sap.ui.model.json.JSONModel("webapp/model/Orders.json");
+            this.getView().setModel(oModel, "orderdetails");              
+            // path relative to project root 
+            //this.setModel(oModel, "orderdetails");              
+            //let oRouter = this.getOwnerComponent().getRouter();
+            //oRouter.getRoute("RouteOrdersMain").attachPatternMatched(this._onRouteMatched, this);          
         },
 
-        onPressOrder: function(oEvent) {            
-            let sPath = oEvent.getSource().getBindingContextPath();
-            let splitPath = sPath.split("/");
-            let sIndex = splitPath[2];
-
+        onPressOrder: function(oEvent) {
+            let sOrderID = oEvent.getSource().getBindingContext().getProperty("OrderID");
             this.getOwnerComponent().getRouter().navTo("RouteOrderDetails", {
-                sIndex: sIndex
+                OrderID: sOrderID
             });
         },
 

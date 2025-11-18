@@ -1,0 +1,41 @@
+sap.ui.define([
+    "sap/ui/core/mvc/Controller",
+    "sap/ui/model/json/JSONModel",
+    "sap/m/MessageBox",
+    "sap/ui/model/Sorter",
+    "sap/ui/model/Filter",
+     "sap/ui/core/routing/History"
+], function(Controller, JSONModel, MessageBox, Sorter, Filter, History) {
+    "use strict";
+
+    return Controller.extend("com.ui5.train.orders.controller.OrderDetails", {
+      //  onInit: function() {                       
+      //      var oRouter = this.getOwnerComponent().getRouter();
+      //      oRouter.getRoute("RouteOrderDetails").attachPatternMatched(this._onObjectMatched, this);            
+      //      //this.getOwnerComponent().getRouter().getRoute("RouteOrderDetails").attachPatternMatched(this._onObjectMatched, this);         
+            
+            
+     //   }
+    onInit: function () {
+        var oRouter = this.getOwnerComponent().getRouter();
+        oRouter.getRoute("RouteOrderDetails").attachPatternMatched(this._onObjectMatched, this);
+    },
+    
+    _onObjectMatched: function (oEvent) {
+        var sOrderID = oEvent.getParameter("arguments").OrderID;
+        var oModel = this.getOwnerComponent().getModel("orderdetails");
+ 
+    oModel.read("/Order(OrderID=" + sOrderID + ")", {
+        success: function (oData) {
+            var oOrderModel = new sap.ui.model.json.JSONModel(oData);
+            this.getView().setModel(oOrderModel, "orderdetails");
+        }.bind(this),
+        error: function (oError) {
+            sap.m.MessageToast.show("Order not found: " + sOrderID);
+        }
+    });   
+    
+    }     
+             
+    });
+});

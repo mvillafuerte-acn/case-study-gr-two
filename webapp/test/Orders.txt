@@ -1,0 +1,91 @@
+[
+    {
+        "OrderID": 12201,
+        "OrderDate": "2022-12-31",
+        "ReceivingPlantID": "9101",
+        "ReceivingPlantText": "Singapore",
+        "DeliveringPlantID": "9102",
+        "DeliveringPlantText": "Malaysia",
+        "Status": "Created",
+        "StatusState":"None",
+        "Products":[ 
+            { "ProductID": "P003",
+            "ProductName": "Philips TV",
+            "ProductQty": "1",
+            "PricePerQty": "35000"
+            },
+            { "ProductID": "P003",
+            "ProductName": "Philips TV",
+            "ProductQty": "1",
+            "PricePerQty": "35000"
+            }        
+        ]
+    },
+    {
+        "OrderID": 12223,
+        "OrderDate": "2022-12-31",
+        "ReceivingPlantID": "9101",
+        "ReceivingPlantText": "Singapore",
+        "DeliveringPlantID": "9102",
+        "DeliveringPlantText": "Malaysia",
+        "Status": "Released",
+        "StatusState":"Error",
+        "Products":[ 
+            { "ProductID": "P003",
+            "ProductName": "Philips TV",
+            "ProductQty": "1",
+            "PricePerQty": "35000"
+            },
+            { "ProductID": "P003",
+            "ProductName": "Philips TV",
+            "ProductQty": "1",
+            "PricePerQty": "35000"
+            }        
+        ]        
+    },
+    {
+        "OrderID": 12202,
+        "OrderDate": "2022-12-31",
+        "ReceivingPlantID": "9101",
+        "ReceivingPlantText": "Singapore",
+        "DeliveringPlantID": "9102",
+        "DeliveringPlantText": "Malaysia",
+        "Status": "Delivered",
+        "StatusState":"Success",
+        "Products":[ 
+            { "ProductID": "P003",
+            "ProductName": "Philips TV",
+            "ProductQty": "1",
+            "PricePerQty": "35000"
+            },
+            { "ProductID": "P003",
+            "ProductName": "Philips TV",
+            "ProductQty": "1",
+            "PricePerQty": "35000"
+            }        
+        ]        
+    },
+    {
+        "OrderID": 12204,
+        "OrderDate": "2022-12-31",
+        "ReceivingPlantID": "9101",
+        "ReceivingPlantText": "Singapore",
+        "DeliveringPlantID": "9102",
+        "DeliveringPlantText": "Malaysia",
+        "Status": "Partially Completed",
+        "StatusState":"Information",
+        "Products":[ 
+            { "ProductID": "P003",
+            "ProductName": "Philips TV",
+            "ProductQty": "1",
+            "PricePerQty": "35000"
+            },
+            { "ProductID": "P003",
+            "ProductName": "Philips TV",
+            "ProductQty": "1",
+            "PricePerQty": "35000"
+            }        
+        ]        
+
+    }        
+]
