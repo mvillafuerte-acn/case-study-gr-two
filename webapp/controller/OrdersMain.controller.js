@@ -10,6 +10,12 @@ sap.ui.define([
         onInit: function() { 
             let oModel = new JSONModel();
             oModel = this.getOwnerComponent().getModel("orderdetails");
+            let iOrders = oModel.getProperty("/Orders");
+            //Sort data ascending by Order ID
+            iOrders.sort(function(a, b){
+                return a.OrderID - b.OrderID;
+            });
+            oModel.setProperty("/Orders", iOrders);
             this.getView().setModel(oModel, "orderdetails");  
 
             let oRouter = this.getOwnerComponent().getRouter();
