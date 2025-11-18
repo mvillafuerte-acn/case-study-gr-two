@@ -25,26 +25,32 @@ sap.ui.define([
                 sIndex: sIndex
             });
         },
-
+        
         onDelete: function() {            
             let oBundle = this.getView().getModel("i18n").getResourceBundle();
             let sMsgHeader = oBundle.getText("message.onDelete")
             let oTable = this.byId("ordersTable");
             let aSelectedItems = oTable.getSelectedItems();
-            let oModel = this.getOwnerComponent().getModel();
+            let oModel = this.getView().getModel("orderdetails");
+            //let oModel = this.getOwnerComponent().getModel();
             let iPending = aSelectedItems.length;
                                             
             if (aSelectedItems.length > 0) {
                 let sMessage = oBundle.getText("message.onDelete.Confirmation");                                 
                 aSelectedItems.forEach(function(item) {                    
-                    let sPath = item.getBindingContext().getPath();
+                    let sPath = item.getBindingContextPath();               
                     MessageBox.show(sMessage, {
                         title: sMsgHeader,
                         styleClass: "sapUiSizeCompact",
                         actions: [sap.m.MessageBox.Action.OK],
                         onClose: function(oAction) {
                             //Code to delete data here     
-                            oModel.remove(sPath);                                          
+                            let splitPath = sPath.split("/");
+                            let sIndex = splitPath[2];
+                            let aData = oModel.getProperty("/Orders").splice(sIndex, 1);
+                            let rData = oModel.getProperty("/Orders");
+                            oModel.setProperty("/Orders", rData);
+                                                                                           
                         }
                     });                                        
             });
@@ -59,7 +65,7 @@ sap.ui.define([
                             //no action after close
                         }
                 });
-            }
+            }            
 
         }
     });
