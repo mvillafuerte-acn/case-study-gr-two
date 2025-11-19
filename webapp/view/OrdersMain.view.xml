@@ -23,7 +23,7 @@
 			<f:header>
 				<f:DynamicPageHeader>
 					<f:content>
-						<fb:FilterBar id="filterbar" persistencyKey="myPersKey" useToolbar="false" search=".onSearch" filterChange=".onFilterChange" afterVariantLoad=".onAfterVariantLoad">
+						<fb:FilterBar id="filterbar" persistencyKey="myPersKey" useToolbar="false" search="onSearch" filterChange=".onFilterChange" afterVariantLoad=".onAfterVariantLoad">
 							<fb:filterGroupItems>
 								<fb:FilterGroupItem name="OrderID" label="{i18n>orderMain.Filter.OrderNumber}" groupName="Group1" visibleInFilterBar="true">
 									<fb:control>
@@ -57,7 +57,7 @@
 								</fb:FilterGroupItem>
 								<fb:FilterGroupItem name="Status" label="{i18n>orderMain.Filter.Status}" groupName="Group1" visibleInFilterBar="true">
 									<fb:control>
-										<MultiComboBox
+										<MultiComboBox id="statusBox"
 											name="Status"
 											selectionChange=".onSelectionChange"
 											items="{status>/Status}"

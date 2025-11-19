@@ -7,15 +7,16 @@
         "ReceivingPlantText": "Singapore",
         "DeliveringPlantID": "9102",
         "DeliveringPlantText": "Malaysia",
+        "StatusID": "001",
         "Status": "Created",
         "StatusState":"None",
-        "Product":[ {         
+        "Product":[ {        
         "ProductID": "P003",
         "ProductName": "Philips TV",
         "ProductQty": "1",
         "PricePerQty": "35000"
         },
-        {         
+        {        
         "ProductID": "P001",
         "ProductName": "Sony Bravia TV",
         "ProductQty": "2",
@@ -30,15 +31,16 @@
         "ReceivingPlantText": "Singapore",
         "DeliveringPlantID": "9102",
         "DeliveringPlantText": "Malaysia",
+        "StatusID": "002",
         "Status": "Released",
         "StatusState":"Error",
-        "Product":[ {         
+        "Product":[ {        
         "ProductID": "P001",
         "ProductName": "Sony Bravia TV",
         "ProductQty": "1",
         "PricePerQty": "30000"
         },
-        {         
+        {        
         "ProductID": "P003",
         "ProductName": "Philips TV",
         "ProductQty": "2",
@@ -53,6 +55,7 @@
         "ReceivingPlantText": "Singapore",
         "DeliveringPlantID": "9102",
         "DeliveringPlantText": "Malaysia",
+        "StatusID": "004",
         "Status": "Delivered",
         "StatusState":"Success"
     },
@@ -63,6 +66,7 @@
         "ReceivingPlantText": "Singapore",
         "DeliveringPlantID": "9102",
         "DeliveringPlantText": "Malaysia",
+        "StatusID": "003",
         "Status": "Partially Completed",
         "StatusState":"Information"
     }        
