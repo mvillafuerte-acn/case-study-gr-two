@@ -77,6 +77,37 @@ sap.ui.define([
 
         },
 
+
+        onSearch: function() {
+             //get order id
+            let sOrderID = this.byId("ordersInput").getValue();
+            let rDate  = this.byId("DRS1").getValue();
+            let oSelectedStatus = this.byId("statusBox").getSelectedKeys();            
+            //get table data
+            let oTable = this.byId("ordersTable");
+            let oBinding = oTable.getBinding("items");            
+            if (sOrderID != "") {                
+                //set filter details
+                let oFilter = new sap.ui.model.Filter("OrderID", sap.ui.model.FilterOperator.EQ, sOrderID);
+                //filter table items
+                oBinding.filter([oFilter]);                
+            };
+            if (rDate != "") {
+                let oFilterDate = new sap.ui.model.Filter("OrderDate", sap.ui.model.FilterOperator.EQ, rDate);
+                oBinding.filter([oFilterDate]);
+            };
+            if (oSelectedStatus != "") {
+                let oFilterStatus = new sap.ui.model.Filter("StatusID", sap.ui.model.FilterOperator.EQ, oSelectedStatus);
+                oBinding.filter([oFilterStatus]);                
+            }
+
+
+
+
+
+
+        },
+
     
         onAdd: function () {
             
@@ -84,6 +115,9 @@ sap.ui.define([
             oRouter.navTo("OrdersCreate", null);
        
         }
+
+
+        
 
     
     });
