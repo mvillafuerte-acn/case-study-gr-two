@@ -1,67 +1,63 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
-    "sap/m/MessageBox",
-    "sap/ui/model/Sorter",
-    "sap/ui/model/Filter",
-    "sap/ui/core/routing/History"
-], function (Controller, JSONModel, MessageBox, Sorter, Filter, History) {
+    "sap/m/MessageBox"
+], function(Controller, JSONModel, MessageBox) {
     "use strict";
 
     return Controller.extend("com.ui5.train.orders.controller.OrderDetails", {
 
-        onInit: function () {
+        onInit: function() {
             this.getOwnerComponent()
                 .getRouter()
                 .getRoute("RouteOrderDetails")
                 .attachPatternMatched(this._onObjectMatched, this);
         },
 
-        _onObjectMatched: function (oEvent) {
-            let sIndex = oEvent.getParameter("arguments").sIndex;
+        _onObjectMatched: function(oEvent) {
+            this._currentOrderIndex = parseInt(oEvent.getParameter("arguments").sIndex);
 
-            let oModel = this.getOwnerComponent().getModel("orderdetails");
-            let aOrders = oModel.getProperty("/Orders");
+            const oModel = this.getOwnerComponent().getModel("orderdetails");
+            const oOrder = oModel.getProperty(`/Orders/${this._currentOrderIndex}`);
 
-            let oSelectedOrder = aOrders[sIndex];
+            // ❗ IMPORTANT FIX:
+            // DO NOT deep copy or modify data here.
+            // Just show the existing object so status remains unchanged.
+            this.getView().setModel(new JSONModel(oOrder), "orderdetails");
 
-            // Set the selected order into a local model for detail binding
-            this.getView().setModel(new JSONModel(oSelectedOrder), "orderdetails");
-
-            // Store OrderID to allow editing later
-            this._currentOrderID = oSelectedOrder.OrderID;
+            // Optional: highlight in main table
+            const oTable = this.byId("ordersTable");
+            if (oTable) {
+                oTable.removeSelections();
+                const aItems = oTable.getItems();
+                if (aItems[this._currentOrderIndex]) {
+                    oTable.setSelectedItem(aItems[this._currentOrderIndex]);
+                }
+            }
         },
 
-        onEdit: function () {
-            let oModel = this.getOwnerComponent().getModel("orderdetails");
-            let aOrders = oModel.getProperty("/Orders");
-
-            // Find order index using OrderID
-            let iIndex = aOrders.findIndex(order => order.OrderID === this._currentOrderID);
-
-            if (iIndex === -1) {
-                MessageBox.error("Order not found.");
-                return;
-            }
-
-            // Navigate to edit view
-            this.getOwnerComponent().getRouter().navTo("RouteOrdersEdit", { sIndex: iIndex });
+        // Navigate to edit screen
+        onEdit: function() {
+            this.getOwnerComponent()
+                .getRouter()
+                .navTo("RouteOrdersEdit", { sIndex: this._currentOrderIndex });
         },
 
-        // ==========================================
-        // CANCEL BUTTON → return to OrdersMain LIST
-        // ==========================================
-        onCancel: function () {
-            let oHistory = History.getInstance();
-            let sPreviousHash = oHistory.getPreviousHash();
-
-            if (sPreviousHash !== undefined) {
-                // User came from OrdersMain → go back normally
-                window.history.go(-1);
-            } else {
-                // User opened detail directly → navigate to main list
-                this.getOwnerComponent().getRouter().navTo("RouteOrdersMain", {}, true);
-            }
+        // Always return to main page
+        onCancel: function() {
+            MessageBox.confirm(
+                "Are you sure you want to go back to the main page?",
+                {
+                    title: "Leave Order Details",
+                    actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
+                    onClose: (action) => {
+                        if (action === "OK") {
+                            this.getOwnerComponent().getRouter()
+                                .navTo("RouteOrdersMain", {}, true);
+                        }
+                    }
+                }
+            );
         }
 
     });
