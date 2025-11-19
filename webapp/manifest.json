@@ -108,29 +108,28 @@
         "async": true,
         "viewPath": "com.ui5.train.orders.view"
       },
-      "routes": [
-        {
-          "name": "RouteOrdersMain",
-          "pattern": ":?query:",
-          "target": [
-            "TargetOrdersMain"
-          ]
-        },
-        {
+     "routes": [
+    {
+        "name": "RouteOrdersMain",
+        "pattern": ":?query:",
+        "target": "TargetOrdersMain"
+    },
+    {
         "name": "RouteOrderDetails",
         "pattern": "Orders/{sIndex}",
-        "target": [
-            "TargetOrderDetailsPage"
-          ]
-        },
-        {
-          
-          "name": "OrdersCreate",
-          "pattern": "OrdersCreate",
-          "target": "OrdersCreate"
-        }
-
-      ],
+        "target": "TargetOrderDetailsPage"
+    },
+    {
+        "name": "RouteOrdersEdit",
+        "pattern": "OrdersEdit/{sIndex}",
+        "target": "TargetOrdersEditPage"
+    },
+    {
+        "name": "OrdersCreate",
+        "pattern": "OrdersCreate",
+        "target": "OrdersCreatePage"
+    }
+],
       "targets": {
         "TargetOrdersMain": {
           "id": "OrdersMain",
@@ -140,14 +139,16 @@
           "id": "OrderDetails",
           "name": "OrderDetails"
         },     
-      "OrdersCreate": {
-            "viewId": "OrdersCreate",
-            "viewName": "OrdersCreate"              
+         "TargetOrdersEditPage": {
+        "id": "OrdersEdit",
+        "name": "OrdersEdit"
+    },
 
-       }
-
-
-      }
+    "OrdersCreatePage": {
+        "id": "OrdersCreate",
+        "name": "OrdersCreate"
+    }
+}
 
     },
     "rootView": {

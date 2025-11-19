@@ -1,36 +1,46 @@
 <core:FragmentDefinition xmlns="sap.m"
     xmlns:core="sap.ui.core">
-    <Table id="idTableSCart" inset="false">
-        <headerToolbar>
-            <OverflowToolbar id="idOFT">
-                <content>
-                    <Title id="idTableTitleSCart" text="{i18n>title.Product}"/>
-                </content>
-            </OverflowToolbar>
-        </headerToolbar>
-        <columns>
-            <Column id="idCol1">
-                <Text id="idColText1" text="{i18n>productTable.ProductName}" />
-            </Column>
-            <Column id="idCol2">
-                <Text id="idColText2" text="{i18n>productTable.Quantity}" />
-            </Column>
-            <Column id="idCol3">
-                <Text id="idColText3" text="{i18n>productTable.PricePerQuantity}" />
-            </Column>
-            <Column id="idCol4">
-                <Text id="idColText4" text="{i18n>productTable.TotalPrice}" />
-            </Column>            
-        </columns>
-        <items>
-            <ColumnListItem id="idProductsColumn" vAlign="Middle">
-                <cells>
-                    <Text id="idProductNameCol" text="{products>/ProductID}" />
-                    <Text id="idQtyCol" text="{products>/ProductQty}" />
-                    <Text id="idPriceCol" text="{products>/ProductID}"  />
-                    <Text id="idTotalCol" text="{products>/ProductID}"  />
-                </cells>
-            </ColumnListItem>
-        </items>
-    </Table>
+    <Dialog
+        id="productDialog"
+        title="Select Product"
+        contentHeight="55%"
+        contentWidth="60%">
+        <VBox>
+            <SearchField
+                placeholder="Search Product Name..."
+                liveChange=".onProductSearch"
+                width="100%" />
+            <Table
+                id="idProductSelectTable"
+                mode="SingleSelectLeft"
+                items="{productsData>/Products}">
+                <columns>
+                    <Column>
+                        <Text text="Product ID" />
+                    </Column>
+                    <Column>
+                        <Text text="Product Name" />
+                    </Column>
+                    <Column hAlign="Center">
+                        <Text text="Price Per Quantity" />
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <Text text="{productsData>ProductID}" />
+                            <Text text="{productsData>ProductName}" />
+                            <Text text="{productsData>PricePerQty}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </VBox>
+        <beginButton>
+            <Button text="Select" press=".onProductSelectConfirm"/>
+        </beginButton>
+        <endButton>
+            <Button text="Cancel" press=".onCloseProductDialog"/>
+        </endButton>
+    </Dialog>
 </core:FragmentDefinition>
