@@ -1,4 +1,5 @@
-[
+{
+    "Orders": [
     {
         "OrderID": 12201,
         "OrderDate": "2022-12-31",
@@ -8,13 +9,18 @@
         "DeliveringPlantText": "Malaysia",
         "Status": "Created",
         "StatusState":"None",
-        "Product":[ { 
-        "OrderID": 12201,
+        "Product":[ {         
         "ProductID": "P003",
         "ProductName": "Philips TV",
         "ProductQty": "1",
         "PricePerQty": "35000"
-        }    
+        },
+        {         
+        "ProductID": "P001",
+        "ProductName": "Sony Bravia TV",
+        "ProductQty": "2",
+        "PricePerQty": "30000"
+        }        
         ]
     },
     {
@@ -25,7 +31,20 @@
         "DeliveringPlantID": "9102",
         "DeliveringPlantText": "Malaysia",
         "Status": "Released",
-        "StatusState":"Error"
+        "StatusState":"Error",
+        "Product":[ {         
+        "ProductID": "P001",
+        "ProductName": "Sony Bravia TV",
+        "ProductQty": "1",
+        "PricePerQty": "30000"
+        },
+        {         
+        "ProductID": "P003",
+        "ProductName": "Philips TV",
+        "ProductQty": "2",
+        "PricePerQty": "35000"
+        }        
+        ]        
     },
     {
         "OrderID": 12202,
@@ -48,3 +67,4 @@
         "StatusState":"Information"
     }        
 ]
+}

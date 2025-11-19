@@ -73,11 +73,16 @@
         "uri": "./model/Plants.json",
         "preload": true        
       },
-      "products":{
+      "productsData":{
         "type": "sap.ui.model.json.JSONModel",
-        "uri": "./model/Products.json",
+        "uri": "./model/ProductsData.json",
         "preload": true        
-      },                
+      },  
+      "orderdetails":{
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "./model/Orders.json",
+        "preload": true        
+      },                      
       "": {
         "dataSource": "mainService",
         "preload": true,
@@ -111,7 +116,14 @@
             "TargetOrdersMain"
           ]
         },
-           {
+        {
+        "name": "RouteOrderDetails",
+        "pattern": "Orders/{sIndex}",
+        "target": [
+            "TargetOrderDetailsPage"
+          ]
+        },
+        {
           
           "name": "OrdersCreate",
           "pattern": "OrdersCreate",
@@ -124,8 +136,10 @@
           "id": "OrdersMain",
           "name": "OrdersMain"
         },
-
-     
+        "TargetOrderDetailsPage": {
+          "id": "OrderDetails",
+          "name": "OrderDetails"
+        },     
       "OrdersCreate": {
             "viewId": "OrdersCreate",
             "viewName": "OrdersCreate"              

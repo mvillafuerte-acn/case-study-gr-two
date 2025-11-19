@@ -1,19 +1,23 @@
 { "Status": [
     {
         "StatusID": "001",
-        "Status": "Created"
+        "Status": "Created",
+        "StatusState": "None"
     },
     {
         "StatusID": "002",
-        "Status": "Released"
+        "Status": "Released",
+        "StatusState": "Error"
     },
     {
         "StatusID": "003",
-        "Status": "Partially Completed"
+        "Status": "Partially Completed",
+        "StatusState": "Information"
     },
     {
         "StatusID": "004",
-        "Status": "Delivered"
+        "Status": "Delivered",
+        "StatusState": "Success"
     }            
 ]
 }

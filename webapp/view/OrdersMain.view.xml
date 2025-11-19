@@ -61,8 +61,8 @@
 											name="Status"
 											selectionChange=".onSelectionChange"
 											items="{status>/Status}"
-										>
-											<core:Item key="{status>StatusID}" text="{status>Status}"/>
+										>											
+											<core:Item key="{status>StatusID}" text="{status>Status}" />
 										</MultiComboBox>
 									</fb:control>
 								</fb:FilterGroupItem>
@@ -76,10 +76,8 @@
 					id="ordersTable"
 					inset="false"
                     mode="MultiSelect"                    
-                    selectionChange="onSelectItem"
-					items="{
-						path: '/Orders'
-					}"
+                    selectionChange="onSelectItem"					
+					items="{orderdetails>/Orders}"
 				>
 				<headerToolbar>                    
 					<OverflowToolbar id="otbSubheader">
@@ -107,13 +105,17 @@
 						</Column>                        
 					</columns>
 					<items>
-						<ColumnListItem vAlign="Middle"  type="Navigation">
+						<ColumnListItem vAlign="Middle"  type="Navigation" id="orderList" press="onPressOrder">
 							<cells>
-								<ObjectIdentifier title="{OrderID}" />
-								<Text text="{OrderDate}" />
-								<Text text="{= ${ReceivingPlantID} + ' - ' + ${ReceivingPlantText} }" />
-                                <Text text="{= ${DeliveringPlantID} + ' - ' + ${DeliveringPlantText} }" />
-                                <Text text="{Status}" />
+								<ObjectIdentifier title="{orderdetails>OrderID}" />
+								<Text text="{orderdetails>OrderDate}" />
+								<Text text="{= ${orderdetails>ReceivingPlantID} + ' - ' + ${orderdetails>ReceivingPlantText} }" />
+                                <Text text="{= ${orderdetails>DeliveringPlantID} + ' - ' + ${orderdetails>DeliveringPlantText} }" />
+								<ObjectStatus
+									class="sapUiSmallMarginBottom"
+									text="{orderdetails>Status}"
+									inverted="false"
+									state="{orderdetails>StatusState}" />								                                
 							</cells>
 						</ColumnListItem>
 					</items>

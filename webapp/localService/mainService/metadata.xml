@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
     <edmx:DataServices m:DataServiceVersion="1.0" m:MaxDataServiceVersion="2.0" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata">
-        <Schema Namespace="ProjectModel" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">            
+        <Schema Namespace="ProjectModel" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">            
             <EntityType Name="Order">
                 <Key>
                     <PropertyRef Name="OrderID" />
@@ -13,11 +13,26 @@
                 <Property Name="DeliveringPlantID" Type="Edm.String" MaxLength="4"  />                                
                 <Property Name="DeliveringPlantText" Type="Edm.String" MaxLength="20" />                                
                 <Property Name="Status" Type="Edm.String" MaxLength="10" />
-            </EntityType>        
+                <Property Name="StatusState" Type="Edm.String" MaxLength="10" />                                                                  
+            </EntityType> 
+            <EntityType Name="OrderProduct">
+                <Key>
+                    <PropertyRef Name="Ordered" />
+                    <PropertyRef Name="ProductID"/>
+                </Key>
+                <Property Name="OrderID" Type="Edm.Int32" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />                
+                <Property Name="ProductID" Type="Edm.String" MaxLength="4" />
+                <Property Name="ProductName" Type="Edm.String" MaxLength="20"  />
+                <Property Name="ProductQty" Type="Edm.String" MaxLength="10"  />  
+                <Property Name="PricePerQty" Type="Edm.String" MaxLength="10"  />                                                                
+           </EntityType>                    
            <EntityContainer Name="ProjectEntities" m:IsDefaultEntityContainer="true">
                 <EntitySet Name="Orders" EntityType="ProjectModel.Order">
                 </EntitySet>
-            </EntityContainer>               
+                <EntitySet Name="OrderProduct" EntityType="ProjectModel.OrderProduct">
+                </EntitySet>                
+            </EntityContainer>           
+                            
         </Schema>        
     </edmx:DataServices>
 </edmx:Edmx>
