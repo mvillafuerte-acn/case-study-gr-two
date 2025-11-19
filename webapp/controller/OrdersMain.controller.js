@@ -2,8 +2,9 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
     "sap/m/MessageBox",
-    "sap/ui/model/Sorter"    
-], function(Controller, JSONModel, MessageBox, Sorter) {
+    "sap/ui/model/Sorter" ,
+    "sap/m/MessageToast"   
+], function(Controller, JSONModel, MessageBox, Sorter, MessageToast) {
     "use strict";
 
     return Controller.extend("com.ui5.train.orders.controller.OrdersMain", {
@@ -71,8 +72,19 @@ sap.ui.define([
                             //no action after close
                         }
                 });
-            }            
+            }
+            
 
+        },
+
+    
+        onAdd: function () {
+            
+            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+            oRouter.navTo("OrdersCreate", null);
+       
         }
+
+    
     });
 });

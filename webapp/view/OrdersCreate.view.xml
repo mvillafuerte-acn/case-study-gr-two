@@ -1,0 +1,89 @@
+<mvc:View
+  controllerName="com.ui5.train.orders.controller.OrdersCreate"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns:f="sap.ui.layout.form"
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core">
+
+  <Page id="idOrdersCreate" title="Create Order" showNavButton="true" navButtonPress="onNavBack">
+    <content>
+      <VBox id="createOrderVBox" class="sapUiSmallMargin">
+        <f:SimpleForm
+          id="idSimpleForm"
+          editable="true"
+          layout="ResponsiveGridLayout"
+          title="{i18n>header.OrderDetail}"
+          labelSpanXL="3"
+          labelSpanL="3"
+          labelSpanM="3"
+          labelSpanS="12"
+          adjustLabelSpan="false"
+          emptySpanXL="4"
+          emptySpanL="4"
+          emptySpanS="0"
+          columnsXL="1"
+          columnsL="1"
+          columnsM="1"
+          singleContainerFullSize="false">
+
+          <!-- Receiving Plant -->
+          <Label id="receivingPlantLabel" text="Receiving Plant" labelFor="receivingPlantInput"/>
+          <Input id="receivingPlantInput"
+                 value="{vm>/NewOrder/ReceivingPlantDesc}"
+                 showValueHelp="true"
+                 valueHelpRequest="onReceivingPlantHelp"
+                 editable="true"
+                 required="true"/>
+
+          <!-- Delivering Plant -->
+          <Label id="deliveringPlantLabel" text="Delivering Plant" labelFor="deliveringPlantInput"/>
+          <Input id="deliveringPlantInput"
+                 value="{vm>/NewOrder/DeliveringPlantDesc}"
+                 showValueHelp="true"
+                 valueHelpRequest="onDeliveringPlantHelp"
+                 editable="true"
+                 required="true"/>
+
+        </f:SimpleForm>
+      </VBox>
+
+      <VBox id="productsVBox" class="sapUiSmallMargin">
+        <!-- Toolbar for Add/Delete Buttons -->
+        <Toolbar id="productToolbar">
+          <Title id="productTitle" text="Products"/>
+          <ToolbarSpacer id="toolbarSpacer"/>
+          <Button id="addProductBtn" icon="sap-icon://add" press="onAddProduct"/>
+          <Button id="deleteProductBtn" icon="sap-icon://delete" press="onDeleteProduct"/>
+        </Toolbar>
+
+        <!-- Products Table -->
+        <Table id="productsTable" mode="MultiSelect" items="{vm>/NewOrder/Products}">
+          <columns>
+            <Column id="colProductName"><Text id="colTextProductName" text="Product Name"/></Column>
+            <Column id="colQuantity"><Text id="colTextQuantity" text="Quantity"/></Column>
+            <Column id="colPrice"><Text id="colTextPrice" text="Price per Quantity"/></Column>
+            <Column id="colTotal"><Text id="colTextTotal" text="Total Price"/></Column>
+          </columns>
+          <items>
+            <ColumnListItem id="productRow">
+              <cells>
+                <Text id="cellProductName" text="{vm>ProductDescription}"/>
+                <Text id="cellQuantity" text="{vm>Quantity}"/>
+                <Text id="cellPrice" text="{vm>PricePerQuantity}"/>
+                <Text id="cellTotal" text="{vm>TotalPrice}"/>
+              </cells>
+            </ColumnListItem>
+          </items>
+        </Table>
+      </VBox>
+    </content>
+
+    <footer>
+      <Toolbar id="footerToolbar">
+        <ToolbarSpacer id="footerSpacer"/>
+        <Button id="saveBtn" text="Save" type="Emphasized" press="onSave"/>
+        <Button id="cancelBtn" text="Cancel" press="onCancel"/>
+      </Toolbar>
+    </footer>
+  </Page>
+</mvc:View>

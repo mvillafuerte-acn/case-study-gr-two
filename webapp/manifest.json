@@ -122,7 +122,14 @@
         "target": [
             "TargetOrderDetailsPage"
           ]
+        },
+        {
+          
+          "name": "OrdersCreate",
+          "pattern": "OrdersCreate",
+          "target": "OrdersCreate"
         }
+
       ],
       "targets": {
         "TargetOrdersMain": {
@@ -132,8 +139,16 @@
         "TargetOrderDetailsPage": {
           "id": "OrderDetails",
           "name": "OrderDetails"
-        }
+        },     
+      "OrdersCreate": {
+            "viewId": "OrdersCreate",
+            "viewName": "OrdersCreate"              
+
+       }
+
+
       }
+
     },
     "rootView": {
       "viewName": "com.ui5.train.orders.view.App",
