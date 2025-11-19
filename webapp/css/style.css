@@ -1,1 +1,55 @@
-/* Enter your custom styles here */
+/* Enter your custom styles here *//* ------------------------------------------------ */
+/* FLOATING ACTION BAR                              */
+/* ------------------------------------------------ */
+.floatingActionBar {
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    margin: 1rem;
+    width: auto;
+    max-width: calc(100% - 2rem);
+    overflow: visible;
+}
+
+/* ------------------------------------------------ */
+/* BLUE TEXT BUTTONS                                */
+/* ------------------------------------------------ */
+.blueTextButton .sapMBtnInner {
+    color: #0a6ed1 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+.blueTextButton .sapMBtn:hover .sapMBtnInner {
+    text-decoration: underline;
+}
+
+/* ------------------------------------------------ */
+/* READ-ONLY TEXT FIELDS (GRAY)                     */
+/* ------------------------------------------------ */
+/* Read-only input-style box */
+.readOnlyBox {
+    background-color: #f2f2f2 !important;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+
+    padding: 0.3rem 0.6rem;
+    display: inline-block;
+    max-width: 250px;        /* prevents too long fields */
+
+    height: 2rem;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+/* ------------------------------------------------ */
+/* STATUS TEXT FIELDS                               */
+/* ------------------------------------------------ */
+.statusWidth {
+    width: 250px !important;   /* same as your readOnlyBox width */
+}
+
+
+

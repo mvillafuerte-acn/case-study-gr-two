@@ -75,5 +75,23 @@
             </Panel>
 
         </content>
+         <!-- ===== FOOTER BAR ===== -->
+<footer>
+    <OverflowToolbar design="Transparent" width="100%" class="floatingActionBar">
+        <ToolbarSpacer/>
+        <Button
+            id="btnEdit"
+            text="Edit"
+            type="Transparent"
+            press="onEdit"
+            class="blueTextButton"/>
+        <Button
+            id="btnCancel"
+            text="Cancel"
+            type="Transparent"
+            press="onCancel"
+            class="blueTextButton"/>
+    </OverflowToolbar>
+</footer>
     </Page>
 </mvc:View>

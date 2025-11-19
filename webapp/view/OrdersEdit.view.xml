@@ -1,0 +1,94 @@
+<mvc:View
+    controllerName="com.ui5.train.orders.controller.OrdersEdit"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+    <Page id="idEditPage" title="Edit Order">
+        <content>
+            <!-- ORDER DETAILS (READ ONLY FIELDS) -->
+            <Panel headerText="Order Detail" class="sapUiSmallMargin">
+                <f:SimpleForm
+                    editable="false"
+                    layout="ResponsiveGridLayout"
+                    labelSpanL="3" labelSpanM="4"
+                    columnsL="2" columnsM="1"
+                      class="centerLabelText label-center">
+
+                    <Label text="Order Number"/>
+                    <VBox class="readOnlyBox">
+                        <Text text="{editModel>/OrderID}" />
+                    </VBox>
+                    <Label text="Created On"/>
+                    <VBox class="readOnlyBox">
+                        <Text text="{editModel>/OrderDate}" />
+                    </VBox>
+                    <Label text="Receiving Plant"/>
+                    <VBox class="readOnlyBox">
+                        <Text text="{= ${editModel>/ReceivingPlantID} + ' - ' + ${editModel>/ReceivingPlantText} }"/>
+                    </VBox>
+                    <Label text="Delivering Plant"/>
+                    <VBox class="readOnlyBox">
+                        <Text text="{= ${editModel>/DeliveringPlantID} + ' - ' + ${editModel>/DeliveringPlantText} }"/>
+                    </VBox>
+                    <!-- Status stays editable -->
+                    <Label text="Status"/>
+                    <Select selectedKey="{editModel>/Status}" class="statusWidth">
+                        <items>
+                            <core:Item key="Created" text="Created"/>
+                            <core:Item key="Approved" text="Approved"/>
+                            <core:Item key="Delivered" text="Delivered"/>
+                        </items>
+                    </Select>
+                </f:SimpleForm>
+            </Panel>
+            <!-- PRODUCT LIST SECTION -->
+            <Panel headerText="Products" class="sapUiSmallMarginTop">
+                <Toolbar>
+                    <ToolbarSpacer/>
+                    <OverflowToolbarButton
+                        icon="sap-icon://add"
+                        type="Transparent"
+                        tooltip="Add Product"
+                        press=".onAddProduct" />
+                    <OverflowToolbarButton
+                        icon="sap-icon://delete"
+                        type="Transparent"
+                        tooltip="Delete Product"
+                        press=".onDeleteProduct" />
+                </Toolbar>
+             <Table 
+    id="idProductsTable"
+    mode="MultiSelect"
+    items="{editModel>/Product}">
+    <columns>
+        <Column><Text text="Product"/></Column>
+        <Column hAlign="Center"><Text text="Quantity"/></Column>
+        <Column hAlign="Center"><Text text="Price Per Qty"/></Column>
+        <Column hAlign="Center"><Text text="Total Price"/></Column>
+    </columns>
+    <items>
+        <ColumnListItem type="Inactive">
+            <cells>
+                <Text text="{editModel>ProductName}" />
+                <Input
+                    value="{editModel>ProductQty}"
+                    type="Number"
+                    liveChange=".onQuantityChange"/>
+                <Text text="{editModel>PricePerQty}" />
+                <Text text="{= ${editModel>ProductQty} * ${editModel>PricePerQty} }" />
+            </cells>
+        </ColumnListItem>
+    </items>
+</Table>
+            </Panel>
+        </content>
+        <footer>
+            <OverflowToolbar>
+                <ToolbarSpacer/>
+                <Button text="Save" type="Emphasized" press=".onSave"/>
+                <Button text="Cancel" press=".onCancel"/>
+            </OverflowToolbar>
+        </footer>
+    </Page>
+</mvc:View>

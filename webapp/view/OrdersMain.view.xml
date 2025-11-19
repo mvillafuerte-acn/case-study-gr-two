@@ -78,10 +78,15 @@
                     mode="MultiSelect"                    
                     selectionChange="onSelectItem"					
 					items="{orderdetails>/Orders}"
+
+				    
+
+
+
 				>
 				<headerToolbar>                    
 					<OverflowToolbar id="otbSubheader">
-                        <Title text="{i18n>orderMain.TableTitle} ({orderdetails>/Orders/length})" level="H2"/>
+                        <Title text="{i18n>orderMain.TableTitle}" level="H2"/>
 						<ToolbarSpacer/>												
 						<OverflowToolbarButton tooltip="{i18n>button.Create}" type="Transparent" text="Add" icon="sap-icon://add" press="onAdd"/>
 						<OverflowToolbarButton tooltip="{i18n>button.Delete}" type="Transparent" text="Delete" icon="sap-icon://delete" press="onDelete"/>						
