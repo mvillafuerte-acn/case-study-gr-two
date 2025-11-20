@@ -17,22 +17,22 @@
                     columnsL="2" columnsM="1"
                     class="centerLabelText label-center">
 
-                    <Label text="Order Number"/>
+                    <Label text="{i18n>label.OrderNumber}"/>
                     <VBox class="readOnlyBox">
                         <Text text="{editModel>/OrderID}" />
                     </VBox>
 
-                    <Label text="Created On"/>
+                    <Label text="{i18n>label.CreatedOn}"/>
                     <VBox class="readOnlyBox">
                         <Text text="{editModel>/OrderDate}" />
                     </VBox>
 
-                    <Label text="Receiving Plant"/>
+                    <Label text="{i18n>label.ReceivingPlant}"/>
                     <VBox class="readOnlyBox">
                         <Text text="{= ${editModel>/ReceivingPlantID} + ' - ' + ${editModel>/ReceivingPlantText} }"/>
                     </VBox>
 
-                    <Label text="Delivering Plant"/>
+                    <Label text="i18n>label.DeliveringPlant"/>
                     <VBox class="readOnlyBox">
                         <Text text="{= ${editModel>/DeliveringPlantID} + ' - ' + ${editModel>/DeliveringPlantText} }"/>
                     </VBox>
