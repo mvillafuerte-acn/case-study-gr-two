@@ -71,7 +71,19 @@
       "plants":{
         "type": "sap.ui.model.json.JSONModel",
         "uri": "./model/Plants.json",
+        "preload": true 
+      },
+      
+        "deliveryPlantsModel":{
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "./model/DeliveringPlants.json",
         "preload": true        
+      },
+        "receivingPlantsModel":{
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "./model/ReceivingPlants.json",
+        "preload": true        
+           
       },
       "productsData":{
         "type": "sap.ui.model.json.JSONModel",

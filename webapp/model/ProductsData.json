@@ -1,19 +1,29 @@
-{ "Products":[
+[
     
-        { "ProductID": "P001",
-        "ProductName": "Sony Bravia TV",
-        "PricePerQty": "30000"
+        { "ProductID": 10,
+          "OrderID": 101,
+          "DeliveringPlant":9101,
+          "ProductDescription": "Sony Bravia TV",
+          "Quantity":5,
+          "PricePerQuantity": 30000,
+          "TotalPrice": 150000
         },
+        { "ProductID": 10,
+          "OrderID": 101,
+          "DeliveringPlant":9102,
+          "ProductDescription": "Samsung TV",
+          "Quantity":4,
+          "PricePerQuantity": 50000,
+          "TotalPrice": 200000
+        },
+        { "ProductID": 10,
+          "OrderID": 101,
+          "DeliveringPlant":9103,
+          "ProductDescription": "Philips TV",
+          "Quantity":2,
+          "PricePerQuantity": 35000,
+          "TotalPrice": 70000
+        }
 
-        { "ProductID": "P002",
-        "ProductName": "Samsung TV",
-        "PricePerQty": "50000"
-        },  
-
-        { "ProductID": "P003",
-        "ProductName": "Philips TV",
-        "PricePerQty": "35000"
-        }                
 ]
 
-}
