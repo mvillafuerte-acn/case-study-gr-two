@@ -12,11 +12,12 @@ sap.ui.define([
   "sap/m/Button",
   "sap/m/Select",
    "sap/ui/core/routing/History"
-], function (Controller, JSONModel, MessageBox, MessageToast, Dialog, SearchField, List, StandardListItem, Input, Label, Button, Select) {
+], function (Controller, JSONModel, MessageBox, MessageToast, Dialog, SearchField, List, StandardListItem, Input, Label, Button, Select, History) {
   "use strict";
 
   return Controller.extend("com.ui5.train.orders.controller.OrdersCreate", {
-    onInit: function () {
+  
+      onInit: function () {
       // 1) Load data model from JSON
       var oDataModel = new JSONModel();
       oDataModel.loadData("./webapp/localService/mainService/data/Orders.json");
@@ -28,11 +29,9 @@ sap.ui.define([
       oDataModel.attachRequestCompleted(function () {
         var oData = oDataModel.getData() || {};
 
-        var aOrders = Array.isArray(oData.Orders) ? oData.Orders : [];
-        var nextOrderId = this._getNextOrderId(aOrders);
-
+        // Create NewOrder object
         var oNewOrder = {
-          OrderID: nextOrderId,
+          OrderID: "", // will set next ID below
           CreationDate: new Date().toISOString().split("T")[0],
           ReceivingPlant: "",
           ReceivingPlantDesc: "",
@@ -42,6 +41,11 @@ sap.ui.define([
           Products: []
         };
 
+        // Compute next OrderID from orderdetails model (OrdersMain source)
+        var nextOrderId = this._getNextOrderIdFromOrdersJSON();
+        oNewOrder.OrderID = nextOrderId;
+
+        // Prepare vm model
         var oViewModel = new JSONModel({
           NewOrder: oNewOrder,
           ReceivingPlants: oData.ReceivingPlants || [],
@@ -57,7 +61,7 @@ sap.ui.define([
       var oRouter = this.getOwnerComponent().getRouter();
       oRouter.getRoute("OrdersCreate").attachPatternMatched(this._onObjectMatched, this);
     },
-
+ 
     _getNextOrderId: function (aOrders) {
       if (!Array.isArray(aOrders) || aOrders.length === 0) {
         return 1;
@@ -67,179 +71,294 @@ sap.ui.define([
       })) + 1;
     },
 
+    _getNextOrderIdFromOrdersJSON: function () {
+      var oOrdersJSON = this.getOwnerComponent().getModel("orderdetails");
+      if (!oOrdersJSON) { return 1; }
+
+      var aOrders = oOrdersJSON.getProperty("/Orders");
+      if (!Array.isArray(aOrders) || aOrders.length === 0) { return 1; }
+
+      // Some legacy entries may store OrderID as string – normalize to number
+      var maxId = aOrders.reduce(function (max, o) {
+        var id = Number(o.OrderID);
+        return isNaN(id) ? max : Math.max(max, id);
+      }, 0);
+
+      return maxId + 1;
+    },
+ 
     // ============================
     // Value Help for Receiving Plant
     // ============================
     onReceivingPlantHelp: function () {
-      var oViewModel = this.getView().getModel("vm");
-      var aPlants = oViewModel.getProperty("/ReceivingPlants") || [];
-
-      var oDialog = new Dialog({
-        id: "receivingPlantDialog",
-        title: "Select Receiving Plant",
-        content: [
-          new SearchField({
-            id: "receivingSearchField",
-            liveChange: function (oEvent) {
-              var sQuery = (oEvent.getParameter("newValue") || "").toLowerCase();
-              oList.getItems().forEach(function (item) {
-                item.setVisible(item.getTitle().toLowerCase().includes(sQuery));
-              });
-            }
-          }),
-          new List({ id: "receivingList" })
-        ]
+      var oView = this.getView();
+      var oTargetModel = oView.getModel("vm");
+      var oReceivingPlantInput = oView.byId("receivingPlantInput");
+      var aPlants = oView.getModel("receivingPlantsModel").getData();
+      var oDialog;
+ 
+      var oList = new List({
+        id: oView.createId("receivingList"),
+        selectionMode: "None"
       });
-
-      var oList = oDialog.getContent()[1];
+ 
       aPlants.forEach(function (p) {
         oList.addItem(new StandardListItem({
-          id: "receivingItem_" + p.PlantID,
           title: p.PlantDescription,
+          description: "ID: " + p.PlantID,
           type: "Active",
+ 
           press: function () {
-            oViewModel.setProperty("/NewOrder/ReceivingPlant", p.PlantID);
-            oViewModel.setProperty("/NewOrder/ReceivingPlantDesc", p.PlantDescription);
+            oReceivingPlantInput.setValue(p.PlantDescription);
+            oTargetModel.setProperty("/NewOrder/ReceivingPlant", p.PlantID);
+            oTargetModel.setProperty("/NewOrder/ReceivingPlantDesc", p.PlantDescription);
             oDialog.close();
+            oDialog.destroy();
           }
         }));
       });
-
-      oDialog.addButton(new Button({ id: "receivingCloseBtn", text: "Close", press: function () { oDialog.close(); } }));
+ 
+      var oSearchField = new SearchField({
+        id: oView.createId("receivingSearchField"),
+        liveChange: function (oEvent) {
+          var sQuery = (oEvent.getParameter("newValue") || "").toLowerCase();
+ 
+          oList.getItems().forEach(function (item) {
+            var sTitle = item.getTitle().toLowerCase();
+            var sDescription = item.getDescription().toLowerCase();
+            var bVisible = sTitle.includes(sQuery) || sDescription.includes(sQuery);
+            item.setVisible(bVisible);
+          });
+        }
+      });
+ 
+      oDialog = new Dialog({
+        id: oView.createId("receivingPlantDialog"),
+        title: "Select Receiving Plant",
+        contentWidth: "400px",
+        content: [
+          oSearchField,
+          oList
+        ],
+        beginButton: new Button({
+          text: "Close",
+          press: function () {
+            oDialog.close();
+            oDialog.destroy();
+          }
+        }),
+ 
+        afterClose: function () {
+          oDialog.destroy();
+        }
+      });
+ 
+      oView.addDependent(oDialog);
       oDialog.open();
     },
-
+ 
+ 
     // ============================
     // Value Help for Delivering Plant
     // ============================
     onDeliveringPlantHelp: function () {
-      var oViewModel = this.getView().getModel("vm");
-      var aPlants = oViewModel.getProperty("/DeliveringPlants") || [];
-
-      var oDialog = new Dialog({
-        id: "deliveringPlantDialog",
-        title: "Select Delivering Plant",
-        content: [
-          new SearchField({
-            id: "deliveringSearchField",
-            liveChange: function (oEvent) {
-              var sQuery = (oEvent.getParameter("newValue") || "").toLowerCase();
-              oList.getItems().forEach(function (item) {
-                item.setVisible(item.getTitle().toLowerCase().includes(sQuery));
-              });
-            }
-          }),
-          new List({ id: "deliveringList" })
-        ]
+      var oView = this.getView();
+      var oTargetModel = oView.getModel("vm");
+      var oDeliveringPlantInput = oView.byId("deliveringPlantInput");
+      var aPlants = oView.getModel("deliveryPlantsModel").getData();
+      var oDialog;
+ 
+      var oList = new List({
+        id: oView.createId("deliveringList"),
+        selectionMode: "None"
       });
-
-      var oList = oDialog.getContent()[1];
+ 
       aPlants.forEach(function (p) {
         oList.addItem(new StandardListItem({
-          id: "deliveringItem_" + p.PlantID,
           title: p.PlantDescription,
+          description: "ID: " + p.PlantID,
           type: "Active",
+ 
           press: function () {
-            oViewModel.setProperty("/NewOrder/DeliveringPlant", p.PlantID);
-            oViewModel.setProperty("/NewOrder/DeliveringPlantDesc", p.PlantDescription);
+            oDeliveringPlantInput.setValue(p.PlantDescription);
+            // oTargetModel.setProperty("/NewOrder/DeliveringPlantDesc", p.PlantDescription);     
+            oTargetModel.setProperty("/NewOrder/DeliveringPlant", p.PlantID);
+            oTargetModel.setProperty("/NewOrder/DeliveringPlantDesc", p.PlantDescription);
             oDialog.close();
+            oDialog.destroy();
           }
         }));
       });
-
-      oDialog.addButton(new Button({ id: "deliveringCloseBtn", text: "Close", press: function () { oDialog.close(); } }));
+ 
+      var oSearchField = new SearchField({
+        id: oView.createId("deliveringSearchField"),
+        liveChange: function (oEvent) {
+          var sQuery = (oEvent.getParameter("newValue") || "").toLowerCase();
+ 
+          oList.getItems().forEach(function (item) {
+            var sTitle = item.getTitle().toLowerCase();
+            var sDescription = item.getDescription().toLowerCase();
+            var bVisible = sTitle.includes(sQuery) || sDescription.includes(sQuery);
+            item.setVisible(bVisible);
+          });
+        }
+      });
+ 
+      oDialog = new Dialog({
+        id: oView.createId("deliveringPlantDialog"),
+        title: "Select Delivering Plant",
+        contentWidth: "400px",
+        content: [
+          oSearchField,
+          oList
+        ],
+        beginButton: new Button({
+          text: "Close",
+          press: function () {
+            oDialog.close();
+            oDialog.destroy();
+          }
+        }),
+ 
+        afterClose: function () {
+          oDialog.destroy();
+        }
+      });
+ 
+      oView.addDependent(oDialog);
       oDialog.open();
     },
-
+ 
     // ============================
     // Add Product dialog with quantity input
     // ============================
     onAddProduct: function () {
-      var oViewModel = this.getView().getModel("vm");
+      var oController = this;
+      var oView = oController.getView();
+      var oViewModel = oView.getModel("vm");
       var sDeliveringPlant = oViewModel.getProperty("/NewOrder/DeliveringPlant");
-
+ 
       if (!sDeliveringPlant) {
         MessageToast.show("Please select a Delivering Plant first.");
         return;
       }
-
-      var aFiltered = (oViewModel.getProperty("/AllProducts") || [])
-        .filter(function (p) { return String(p.DeliveringPlant) === String(sDeliveringPlant); });
-
+ 
+      // var aAllProducts = oView.getModel("productsModel").getData() || [];
+      var aAllProducts = oView.getModel("productsData").getData() || [];
+      var aFiltered = aAllProducts.filter(function (p) {
+        return String(p.DeliveringPlant) === String(sDeliveringPlant);
+      });
+ 
       var oDialog = new Dialog({
-        id: "addProductDialog",
+        id: oView.createId("addProductDialog"),
         title: "Add Product",
         content: [
-          new Label({ id: "productSelectLabel", text: "Select Product" }),
+          new Label({ id: oView.createId("productSelectLabel"), text: "Select Product" }),
           new Select({
-            id: "productSelect",
-            items: aFiltered.map(function (p) {
-              return new sap.ui.core.Item({ key: p.ProductID, text: p.ProductDescription });
+            id: oView.createId("productSelect"),
+            items: aAllProducts.map(function (p) {
+              return new sap.ui.core.Item({
+                key: p.ProductID,
+                text: p.ProductDescription
+              });
             })
           }),
-          new Label({ id: "quantityLabel", text: "Enter Quantity" }),
-          new Input({ id: "quantityInput", type: "Number", value: "1" })
+          new Label({ id: oView.createId("quantityLabel"), text: "Enter Quantity" }),
+          new Input({ id: oView.createId("quantityInput"), type: "Number", value: "1" })
         ],
+ 
         beginButton: new Button({
-          id: "addProductConfirmBtn",
           text: "Add",
           press: function () {
-            var sProductId = sap.ui.getCore().byId("productSelect").getSelectedKey();
-            var iQuantity = parseInt(sap.ui.getCore().byId("quantityInput").getValue(), 10);
-
+            var sProductId = oView.byId("productSelect").getSelectedKey();
+            var iQuantity = parseInt(oView.byId("quantityInput").getValue(), 10);
+ 
             if (!sProductId || isNaN(iQuantity) || iQuantity <= 0) {
               MessageToast.show("Please select a product and enter a valid quantity.");
               return;
             }
-
-            var oProduct = aFiltered.find(function (p) { return String(p.ProductID) === String(sProductId); });
-            this._addProductToOrder(oProduct, iQuantity);
+            // var oProduct = oView.getModel("productsModel").getData().find(function (p) {
+            var oProduct = oView.getModel("productsData").getData().find(function (p) {
+              return String(p.ProductID) === String(sProductId);
+            });
+ 
+            oController._addProductToOrder(oProduct, iQuantity);
             oDialog.close();
-          }.bind(this)
+          }
         }),
-        endButton: new Button({ id: "addProductCancelBtn", text: "Cancel", press: function () { oDialog.close(); } })
+ 
+        endButton: new Button({
+          text: "Cancel",
+          press: function () {
+            oDialog.close();
+          }
+        }),
+        afterClose: function () {
+          oDialog.destroy();
+        }
       });
-
+ 
+      oView.addDependent(oDialog);
       oDialog.open();
     },
-
+ 
     _addProductToOrder: function (oProduct, iQuantity) {
       var oViewModel = this.getView().getModel("vm");
-      var oNewOrder = oViewModel.getProperty("/NewOrder");
-
-      var oNewProduct = {
+ 
+      var fPricePerQuantity = parseFloat(1);
+      var fTotalPrice = fPricePerQuantity * iQuantity;
+ 
+      var oNewItem = {
         ProductID: oProduct.ProductID,
         ProductDescription: oProduct.ProductDescription,
         Quantity: iQuantity,
         PricePerQuantity: oProduct.PricePerQuantity,
         TotalPrice: oProduct.PricePerQuantity * iQuantity
       };
-
-      oNewOrder.Products.push(oNewProduct);
-      oViewModel.refresh(true);
+ 
+      var aCurrentProducts = oViewModel.getProperty("/NewOrder/ProductsData") || [];
+      var oExistingItem = aCurrentProducts.find(function (item) {
+        return item.ProductID === oNewItem.ProductID;
+      });
+ 
+      if (oExistingItem) {
+ 
+        oExistingItem.Quantity += iQuantity;
+        oExistingItem.TotalPrice = oExistingItem.Quantity * oExistingItem.PricePerQuantity;
+ 
+        oViewModel.refresh(true);
+        sap.m.MessageToast.show("Quantity updated for " + aAllProducts.ProductDescription);
+ 
+      } else {
+        aCurrentProducts.push(oNewItem);
+ 
+        oViewModel.setProperty("/NewOrder/ProductsData", aCurrentProducts);
+        oViewModel.refresh(true);
+      }
     },
 
+ 
     onDeleteProduct: function () {
       var oTable = this.byId("productsTable");
       var aSelected = oTable.getSelectedItems();
-
+ 
       if (aSelected.length === 0) {
         MessageToast.show("Please select at least one product to delete.");
         return;
       }
-
+ 
       MessageBox.confirm("Are you sure you want to delete selected item(s)?", {
         onClose: function (oAction) {
           if (oAction === "OK") {
             var oViewModel = this.getView().getModel("vm");
-            var aProducts = oViewModel.getProperty("/NewOrder/Products");
-
+            var aProducts = oViewModel.getProperty("/NewOrder/ProductsData");
+ 
             aSelected.forEach(function (item) {
               var sProductDesc = item.getBindingContext("vm").getObject().ProductDescription;
               aProducts = aProducts.filter(function (p) { return p.ProductDescription !== sProductDesc; });
             });
-
-            oViewModel.setProperty("/NewOrder/Products", aProducts);
+ 
+            oViewModel.setProperty("/NewOrder/ProductsData", aProducts);
             oViewModel.refresh(true);
           }
         }.bind(this)
@@ -247,42 +366,82 @@ sap.ui.define([
     },
 
     onSave: function () {
-      var oViewModel = this.getView().getModel("vm");
-      var oNewOrder = oViewModel.getProperty("/NewOrder");
+      var oVM = this.getView().getModel("vm");
+      if (!oVM) { sap.m.MessageBox.error("View model not found."); return; }
 
-      if (!oNewOrder.ReceivingPlant || !oNewOrder.DeliveringPlant || oNewOrder.Products.length === 0) {
-        MessageToast.show("Please fill all fields and add at least one product.");
-        return;
-      }
+      var oOrdersJSON = this.getOwnerComponent().getModel("orderdetails"); // the model OrdersMain uses
+      if (!oOrdersJSON) { sap.m.MessageBox.error("Orders model 'orderdetails' not found."); return; }
 
-      // Append to Orders array in the raw data model if you want to keep it in-memory
-      var oDataModel = this.getView().getModel("Orders");
-      var oData = oDataModel.getData() || {};
-      oData.Orders = Array.isArray(oData.Orders) ? oData.Orders : [];
-      oData.Orders.push(oNewOrder);
-      oDataModel.refresh(true);
+      var oNew = oVM.getProperty("/NewOrder") || {};
+      var aItems = Array.isArray(oNew.Products) ? oNew.Products : [];
 
-      MessageToast.show("Order " + oNewOrder.OrderID + " created successfully!");
+      // ----- Validate -----
+      var aErrors = [];
+      if (!oNew.ReceivingPlant)  aErrors.push("Receiving Plant is required.");
+      if (!oNew.DeliveringPlant) aErrors.push("Delivering Plant is required.");
+      // if (aItems.length === 0)   aErrors.push("At least one product is required.");
+      if (aErrors.length) { sap.m.MessageBox.error(aErrors.join("\n")); return; }
+
+      // ----- Compute next OrderID from OrdersMain source -----
+      var aOrders = oOrdersJSON.getProperty("/Orders");
+      if (!Array.isArray(aOrders)) { aOrders = []; }
+      var nextId = aOrders.length
+        ? Math.max.apply(null, aOrders.map(function (x) { return Number(x.OrderID) || 0; })) + 1
+        : 1;
+
+      var iOrderId = Number(oNew.OrderID) || nextId;
+
+      // ----- Map items to OrdersMain JSON schema -----
+      var aJsonProducts = aItems.map(function (p) {
+        return {
+          OrderID: iOrderId,
+          ProductID: String(p.ProductID || ""),
+          ProductName: String(p.ProductDescription || ""),
+          ProductQty: String(p.Quantity != null ? p.Quantity : ""),
+          PriceperQty: String(p.PricePerQuantity != null ? p.PricePerQuantity : "")
+        };
+      });
+
+      // ----- Build order with CORRECT ID/TEXT mapping -----
+      var sOrderDate = new Date().toISOString().split("T")[0]; // "YYYY-MM-DD"
+      var oOrderToSave = {
+        OrderID: iOrderId,
+        OrderDate: sOrderDate,
+
+        // IMPORTANT: code goes to *ID*, description to *Text*
+        ReceivingPlantID:  String(oNew.ReceivingPlant),            
+        ReceivingPlantText: String(oNew.ReceivingPlantDesc || ""), 
+
+        DeliveringPlantID:  String(oNew.DeliveringPlant),           
+        DeliveringPlantText: String(oNew.DeliveringPlantDesc || ""), 
+
+        Status: "Created",
+        Statusstate: "None",
+
+        // Items array name used by OrdersMain
+        Product: aJsonProducts
+      };
+
+      // ----- Persist in the exact path OrdersMain reads -----
+      aOrders.push(oOrderToSave);
+      oOrdersJSON.setProperty("/Orders", aOrders);
+      oOrdersJSON.refresh(true);
+
+      // Keep vm aligned
+      oVM.setProperty("/NewOrder/OrderID", iOrderId);
+
+      sap.m.MessageToast.show("Order " + iOrderId + " created successfully!");
       this.onNavBack();
     },
-
-    onCancel: function () {
-      MessageBox.confirm("Are you sure you want to cancel?", {
-        onClose: function (oAction) {
-          if (oAction === "OK") {
-            this.onNavBack();
-          }
-        }.bind(this)
-      });
-    },
-
+        
+ 
     onNavBack: function () {
       var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("RouteOrdersMain", null);
     }
    
-
-
-
+ 
+ 
+ 
   });
 });

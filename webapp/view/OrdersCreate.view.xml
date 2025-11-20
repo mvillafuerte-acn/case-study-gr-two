@@ -26,24 +26,27 @@
           columnsM="1"
           singleContainerFullSize="false">
 
-          <!-- Receiving Plant -->
-          <Label id="receivingPlantLabel" text="Receiving Plant" labelFor="receivingPlantInput"/>
-          <Input id="receivingPlantInput"
-                 value="{vm>/NewOrder/ReceivingPlantDesc}"
+           <Label id="receivingPlantLabel" text="Receiving Plant" labelFor="receivingPlantInput"/>
+            <Input
+                id="receivingPlantInput"
+                  value="{vm>/NewOrder/ReceivingPlantDesc}"
                  showValueHelp="true"
                  valueHelpRequest="onReceivingPlantHelp"
                  editable="true"
-                 required="true"/>
+                 required="true" 
+                 change="onReceivingPlantChange" />
 
-          <!-- Delivering Plant -->
-          <Label id="deliveringPlantLabel" text="Delivering Plant" labelFor="deliveringPlantInput"/>
-          <Input id="deliveringPlantInput"
-                 value="{vm>/NewOrder/DeliveringPlantDesc}"
-                 showValueHelp="true"
-                 valueHelpRequest="onDeliveringPlantHelp"
-                 editable="true"
-                 required="true"/>
-
+            <!-- Delivering Plant (bind to code) -->
+            <Label id="deliveringPlantLabel" text="Delivering Plant" labelFor="deliveringPlantInput"/>
+            <Input
+                id="deliveringPlantInput"
+                value="{vm>/NewOrder/DeliveringPlantDesc}"
+                valueLiveUpdate="true"
+                showValueHelp="true"
+                valueHelpRequest="onDeliveringPlantHelp"
+                editable="true"
+                required="true" 
+                change="onDeliveringPlantChange" />
         </f:SimpleForm>
       </VBox>
 
@@ -57,7 +60,9 @@
         </Toolbar>
 
         <!-- Products Table -->
-        <Table id="productsTable" mode="MultiSelect" items="{vm>/NewOrder/Products}">
+        <Table id="productsTable"
+              mode="MultiSelect"
+              items="{ path: 'vm>/NewOrder/ProductsData' }">
           <columns>
             <Column id="colProductName"><Text id="colTextProductName" text="Product Name"/></Column>
             <Column id="colQuantity"><Text id="colTextQuantity" text="Quantity"/></Column>
@@ -68,9 +73,9 @@
             <ColumnListItem id="productRow">
               <cells>
                 <Text id="cellProductName" text="{vm>ProductDescription}"/>
-                <Text id="cellQuantity" text="{vm>Quantity}"/>
-                <Text id="cellPrice" text="{vm>PricePerQuantity}"/>
-                <Text id="cellTotal" text="{vm>TotalPrice}"/>
+                <Text id="cellQuantity"     text="{vm>Quantity}"/>
+                <Text id="cellPrice"        text="{vm>PricePerQuantity}"/>
+                <Text id="cellTotal"        text="{vm>TotalPrice}"/>
               </cells>
             </ColumnListItem>
           </items>
