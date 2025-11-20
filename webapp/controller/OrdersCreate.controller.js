@@ -90,73 +90,67 @@ sap.ui.define([
     // ============================
     // Value Help for Receiving Plant
     // ============================
-    onReceivingPlantHelp: function () {
-      var oView = this.getView();
-      var oTargetModel = oView.getModel("vm");
-      var oReceivingPlantInput = oView.byId("receivingPlantInput");
-      var aPlants = oView.getModel("receivingPlantsModel").getData();
-      var oDialog;
- 
-      var oList = new List({
-        id: oView.createId("receivingList"),
-        selectionMode: "None"
+ onReceivingPlantHelp: function () {
+  var oView = this.getView();
+  var oTargetModel = oView.getModel("vm");
+  var oReceivingPlantInput = oView.byId("receivingPlantInput");
+
+  var oRecModel = this.getOwnerComponent().getModel("receivingPlantsModel");
+  var data = oRecModel ? oRecModel.getData() : null;
+  var aPlants = Array.isArray(data) ? data : (data && Array.isArray(data.Plants)) ? data.Plants : [];
+
+  if (!aPlants.length) {
+    sap.m.MessageToast.show("No Receiving Plants available.");
+    return;
+  }
+
+  var oDialog;
+  var oList = new sap.m.List({
+    id: oView.createId("receivingList"),
+    mode: sap.m.ListMode.None
+  });
+
+  aPlants.forEach(function (p) {
+    oList.addItem(new sap.m.StandardListItem({
+      title: p.PlantDescription,
+      description: "ID: " + p.PlantID,
+      type: "Active",
+      press: function () {
+        oReceivingPlantInput.setValue(p.PlantDescription);
+        oTargetModel.setProperty("/NewOrder/ReceivingPlant", p.PlantID);
+        oTargetModel.setProperty("/NewOrder/ReceivingPlantDesc", p.PlantDescription);
+        oDialog.close();
+      }
+    }));
+  });
+
+  var oSearchField = new sap.m.SearchField({
+    liveChange: function (oEvent) {
+      var sQuery = (oEvent.getParameter("newValue") || "").toLowerCase();
+      oList.getItems().forEach(function (item) {
+        var sTitle = (item.getTitle() || "").toLowerCase();
+        var sDescription = (item.getDescription() || "").toLowerCase();
+        item.setVisible(sTitle.includes(sQuery) || sDescription.includes(sQuery));
       });
- 
-      aPlants.forEach(function (p) {
-        oList.addItem(new StandardListItem({
-          title: p.PlantDescription,
-          description: "ID: " + p.PlantID,
-          type: "Active",
- 
-          press: function () {
-            oReceivingPlantInput.setValue(p.PlantDescription);
-            oTargetModel.setProperty("/NewOrder/ReceivingPlant", p.PlantID);
-            oTargetModel.setProperty("/NewOrder/ReceivingPlantDesc", p.PlantDescription);
-            oDialog.close();
-            oDialog.destroy();
-          }
-        }));
-      });
- 
-      var oSearchField = new SearchField({
-        id: oView.createId("receivingSearchField"),
-        liveChange: function (oEvent) {
-          var sQuery = (oEvent.getParameter("newValue") || "").toLowerCase();
- 
-          oList.getItems().forEach(function (item) {
-            var sTitle = item.getTitle().toLowerCase();
-            var sDescription = item.getDescription().toLowerCase();
-            var bVisible = sTitle.includes(sQuery) || sDescription.includes(sQuery);
-            item.setVisible(bVisible);
-          });
-        }
-      });
- 
-      oDialog = new Dialog({
-        id: oView.createId("receivingPlantDialog"),
-        title: "Select Receiving Plant",
-        contentWidth: "400px",
-        content: [
-          oSearchField,
-          oList
-        ],
-        beginButton: new Button({
-          text: "Close",
-          press: function () {
-            oDialog.close();
-            oDialog.destroy();
-          }
-        }),
- 
-        afterClose: function () {
-          oDialog.destroy();
-        }
-      });
- 
-      oView.addDependent(oDialog);
-      oDialog.open();
-    },
- 
+    }
+  });
+
+  oDialog = new sap.m.Dialog({
+    id: oView.createId("receivingPlantDialog"),
+    title: "Select Receiving Plant",
+    contentWidth: "400px",
+    content: [oSearchField, oList],
+    beginButton: new sap.m.Button({
+      text: "Close",
+      press: function () { oDialog.close(); }
+    }),
+    afterClose: function () { oDialog.destroy(); }
+  });
+
+  oView.addDependent(oDialog);
+  oDialog.open();
+},
+
  
     // ============================
     // Value Help for Delivering Plant
